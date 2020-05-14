@@ -1,8 +1,10 @@
 //Vado a caricare i file esterni presenti all'interno del file json
 
 var data;
-d3.json("/home/luca/Scrivania/First_Project_infoVis/DataSet/dataset.json", function(d){
-    data = d;
+d3.json("(/home/luca/Scrivania/InfoVis_First_Project/DataSet/dataset.json", function(d){
+    data = d
+    print (data);
+
 
 //Definisco i Margini
 
