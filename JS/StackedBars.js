@@ -1,9 +1,9 @@
 //Vado a caricare i file esterni presenti all'interno del file json
 
 var data;
-d3.json("(/home/luca/Scrivania/InfoVis_First_Project/DataSet/dataset.json", function(d){
-    data = d
-    print (data);
+d3.json("data/dataset.json", function(d){
+    data = d;
+   
 
 
 //Definisco i Margini
@@ -23,7 +23,7 @@ height = 615 - margin.top - margin.bottom; //altezza
 
 //Ora vado a definire  SVG
 
-var svg = d3.select(".viz-portfolio_delinquent-status").append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+var svg = d3.select(".viz-portfolio-delinquent-status").append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 //Trasposizione dei dati su un layers
 
@@ -54,7 +54,7 @@ var colors = ["#24b41f", "#b4621f", "#b41f1f", "#1fa8b4", "#1f24b4"];
 
 var yAxis = d3.svg.axis()
     .scale(y)
-    .orient(left)
+    .orient("left")
     .ticks(10)
     .tickSize(-width, 0 ,0)
     .tickFormat(function(d){return d});
@@ -70,7 +70,7 @@ svg.append("g")
 svg.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + height + ")")
-    call(xAxis);
+    .call(xAxis);
 
 //Funzione che fa la media tra la somma delle statistiche totale e il numero delle statistiche stesse 
 //ed approssima tale media per eccesso
@@ -85,7 +85,7 @@ dataset.forEach(function(d, i){
 });
 
 //Ora devo raggruppare per parametro per poi fare un rettangolo per ciascun gruppo definito
- var groups = svg.selectAll(".value")
+var groups = svg.selectAll(".value")
     .data(dataset)
     .enter().append("g")
     .attr("class","value")
@@ -109,37 +109,42 @@ var rect = groups.selectAll("rect")
     return y(d.y0 + d.y);
 
 })
-.attr("height", function(d) {return y(d.y0) - y(d.y0 + d.y);
+.attr("height", function(d) {
+    return y(d.y0) - y(d.y0 + d.y);
 })
 .attr("width", x.rangedBar())
 .on("mouseover", function(){
+    d3.select(this).style("opacity", 0.75);
+    d3.select(this).attr("stroke","Black").attr("stroke-width", 0.8);
     tooltip.style("display", null);
 })
-.on("mouseout", function() {
+.on("mouseout", function() { //Fine effetto opacità e contorno
+    d3.select(this).style("opacity",1);
+    d3.select(this).attr("stoke","pink").attr("stroke-width",0.2);
     tooltip.style("display", "none");
 })
 .on("mousemove", function(d){
-    var xPosition = d3.mouse(yhis)[0] -15;
+    var xPosition = d3.mouse(this)[0] -15;
     var yPosition = d3.mouse(this)[1] -25;
     tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
-    tooltip.select("text").text(d.y);
+    tooltip.select("text").text(d.current + ": " + d.y + "\n" +"(" + (Math.round((d.y/sum)*100)) + "%)");
 })
-.on("click", function(d){
-    return barChanged(d);
-})
+//.on("click", function(d){
+  //  return barChanged(d);
+//})
 
 var tooltip = svg.append("g")
   .attr("class", "tooltip")
   .style("display", "none");
     
 tooltip.append("rect")
-  .attr("width", 30)
+  .attr("width", 110)
   .attr("height", 20)
   .attr("fill", "white")
   .style("opacity", 0.5);
 
 tooltip.append("text")
-  .attr("x", 15)
+  .attr("x", 54)
   .attr("dy", "1.2em")
   .style("text-anchor", "middle")
   .attr("font-size", "12px")

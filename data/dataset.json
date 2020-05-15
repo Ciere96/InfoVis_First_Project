@@ -16,7 +16,7 @@
             "Fisico":66
          },
        {
-             "Nome":"M.Icardi",
+            "Nome":"M.Icardi",
             "Velocità":75,
             "Tiro":84,
             "Passaggio":61,
@@ -24,7 +24,7 @@
             "Fisico":69
          },
        {
-             "Nome":"E.Cavani",
+            "Nome":"E.Cavani",
             "Velocità":75,
             "Tiro":86,
             "Passaggio":72,
@@ -32,7 +32,7 @@
             "Fisico":83
          },
        {
-                "Nome":"C.Immobile",
+            "Nome":"C.Immobile",
             "Velocità":80,
             "Tiro":85,
             "Passaggio":63,
@@ -40,7 +40,7 @@
             "Fisico":76
          },
        {
-               "Nome":"K.Benzema",
+            "Nome":"K.Benzema",
             "Velocità":76,
             "Tiro":82,
             "Passaggio":80,
@@ -53,9 +53,10 @@
             "Tiro":82,
             "Passaggio":80,
             "Dribbling":87,
-            "Fisico":78         },
+            "Fisico":78   
+         },
        {
-                "Nome":"K.Aguero",
+            "Nome":"K.Aguero",
             "Velocità":80,
             "Tiro":90,
             "Passaggio":77,
@@ -63,7 +64,7 @@
             "Fisico":74
          },
        {
-              "Nome":"G.Higuain",
+            "Nome":"G.Higuain",
             "Velocità":63,
             "Tiro":85,
             "Passaggio":71,
@@ -71,12 +72,12 @@
             "Fisico":71
          },
        {
-                "Nome":"Z.Ibrahimovic",
+            "Nome":"Z.Ibrahimovic",
             "Velocità":56,
             "Tiro":88,
             "Passaggio":77,
             "Dribbling":78,
             "Fisico":78
-         },
+         }
       
 ]
