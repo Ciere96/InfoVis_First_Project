@@ -33,7 +33,7 @@ var x = d3.scale.ordinal()
 
 //Settaggio per l'asse delle y
 var y = d3.scale.linear()
-  .domain([0,600])
+  .domain([0,100])
   .range([height, 0]);
 
 //Settaggio colori, poi in seguito li devo cambiare
@@ -64,19 +64,18 @@ svg.append("g")
 //Funzione di supporto che fa la somma totale del punteggio di ogni statistica per ogni istanza
 //In seguito poi cambiare con la media, basta dividere la somma per 5, sistemare la visaione corretta del grafico con height100 e non 600
 var sum = 0;
-var mean = 0;
-var costant = 5
 dataset.forEach(function(d, i){
-    sum += d[i]
-    mean = (sum/costant).y
+  sum += d[i].y
 
 });	
 
 //Creazione di gruppi per ogni parametro e rettangoli per ogni gruppo
 var groups = svg.selectAll(".value")
   .data(dataset)
+  //Senza questo comando non veranno visualizzati i gruppi di rettangoli
   .enter().append("g")
   .attr("class", "value")
+  //Questo attributi per assegnare ai rettangoli i colori relativi senno sono tutti neri
   .attr('fill', function(d, i) { 
 		return colori[i];
 	})
@@ -85,16 +84,19 @@ var rect = groups.selectAll("rect")
   .data(function(d) {
 	  return d;
   })
+  //OK, qui si associa ogni rettangolo al nome corrsipondente sull'asse x, se omesso si sposta un singolo gruppo di rettangoli verso sinistra con nesssun nome associato
   .enter()
   .append("rect")
   .attr("x", function(d) {
-	  return x(d.name);
-   })
+	 return x(d.name);
+  })
+  //Ok, qui associa i rettangoli all'asse y ovvero al valore corrispondente, se omesso vi saranno tutti rettangoli sull'asse 0 di y quindi in cima
   .attr("y", function(d) {
-	  return y(d.y0 + d.y);
+	  return y((d.y0+ d.y)/5);//questa azione viene effettuata per rappreesentare l'overall del giocatore compreso tra 0 e 100
    })
-  .attr("height", function(d) {
-	  return y(d.y0) - y(d.y0 + d.y);
+   //Questo attributo se omesso non farà visualizzare nessun rettangolo perchè definisce l'altezza dei rettangolo stessi
+  .attr("height", function(d) { 
+	  return (y(d.y0) - y(d.y0+ d.y))/5;//questa azione viene effettuata per rappreesentare l'overall del giocatore compreso tra 0 e 100
    })
   .attr("width", x.rangeBand())
   .on("mouseover", function() { //Effetto opacità e contorno per evidenziare un certo rettangolo
@@ -105,12 +107,12 @@ var rect = groups.selectAll("rect")
 	  d3.select(this).style("opacity", 1);
       d3.select(this).attr("stroke","pink").attr("stroke-width",0.2);
       tooltip.style("display", "none"); })
-  // .on("mousemove", function(d) { //Display Nome statistica, valore assoluto e percentuale rispetto al totale
-  //     var xPosition = d3.mouse(this)[0] - 15;
-  //     var yPosition = d3.mouse(this)[1] - 25;
-  //     tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
-  //     tooltip.select("text").text(d.current + ":  " + d.y  + "\n" + " (" + (Math.round((d.y/sum)*100)) + "%)");
-  // })
+  .on("mousemove", function(d) { //Display Nome statistica, valore assoluto e percentuale rispetto al totale
+      var xPosition = d3.mouse(this)[0] - 15;
+      var yPosition = d3.mouse(this)[1] - 25;
+      tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
+      tooltip.select("text").text(d.current + ":  " + d.y  + "\n" + " (" + (Math.round((d.y/sum)*100)) + "%)");
+  })
   //questa funzione permette, cliccando con il tasto sinistro della sezione della barra di richiamre la funzione apssata come paramentro
   //.on("click", function(d) { //Richaimo della  funzione principale
 	//  change(d);
@@ -171,17 +173,12 @@ legend.append("text")
 //Implementazione della funzione principale,  Facendo click con il pulsante sinistro del mouse su una sezione della barra, 
 //per tutte le barre questa sezione si scambia di posto con la sezione che si trova sopra di essa. Fai in modo che le transizioni siano progressive e non a salti.
 function change(d) {
-		var statistica = d.current;
-        var x0 = x.domain(data.sort(this.checked ? function (a, b) {
-              return a.Nome - b.Nome;  //sort nomi 
-    } : function (a, b) {
-              return d3.descending(a[statistica], b[statistica]); //sort statistiche
-    })
-         .map(function (d) {
-              return d.Nome;
-    }))
-        .copy();
+  myChart = d3.select("rect").on('click',
+            function(){
 
+            })
+
+		
 	//ricalcolo del dataset
     var groups = svg.selectAll(".value")
     .data(dataset);
