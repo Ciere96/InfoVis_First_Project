@@ -118,19 +118,19 @@ var rect = groups.selectAll("rect")
 	  d3.select(this).style("opacity", 1);
       d3.select(this).attr("stroke","pink").attr("stroke-width",0.2);
       tooltip.style("display", "none"); })
-  .on("mousemove", function(d) { //Display Nome statistica, valore assoluto e percentuale rispetto al totale
-      var xPosition = d3.mouse(this)[0] - 15;
-      var yPosition = d3.mouse(this)[1] - 25;
-      tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
-      tooltip.select("text").text(d.current + ":  " + d.y  + "\n" + " (" + (Math.round((d.y/sum)*100)) + "%)");
-  })
-  .on("click", function(d) {
+  // .on("mousemove", function(d) { //Display Nome statistica, valore assoluto e percentuale rispetto al totale
+  //     var xPosition = d3.mouse(this)[0] - 15;
+  //     var yPosition = d3.mouse(this)[1] - 25;
+  //     tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
+  //     tooltip.select("text").text(d.current + ":  " + d.y  + "\n" + " (" + (Math.round((d.y/sum)*100)) + "%)");
+  // })
+  // .on("click", function(d) {
 
-    // switchRect();
-    // tooltip.style('display', 'none');
-    // update();
-   change(d);
-  }) 
+  //   // switchRect();
+  //   // tooltip.style('display', 'none');
+  //   // update();
+  //  change(d);
+  // }) 
   
   
 //Preparazione del tooltip, inizialmente il display è nascosto
@@ -257,72 +257,147 @@ legend.append("text")
 //   // .call(yxAxis)
 //   // .selectAll("g")
 
-function change(d){
+
   var g1 = svg.selectAll("#a.value")
-          .data(dataset)
+        .data(dataset);
   var g2 = svg.selectAll("#b.value")
-          .data(dataset)  
-  var g3 = svg.selectAll("#c.value")
-          .data(dataset)
-  var g4 = svg.selectAll("#d.value")
-          .data(dataset)
-  var g5 = svg.selectAll("#e.value")
-          .data(dataset)
+        .data(dataset) 
+
   var r1 = g1.selectAll("#a.value rect")
-          .data(function(d){
-              return d;
-            })
-          .attr("y", function(d) {
-              return y((d.y0+ d.y)/5);
-          })
+  .data(function(d){
+      return d;
+  })
+
+
+  .on("click", function(d){
+    changer1r2(d);
+
+  })
+
+  
+
+ 
+  
+  //Separato il click tra i vari rect appartenenti allo stesso gruppo, ora qui funziona se si clicca sul rect giusto
+  function changer1r2(d,i){
+    var r2 = g2.selectAll("#b.value rect")
+    .data(function(d){
+      return(d);
+    })
+  
+    var heightr1Array = [103.5, 100.05, 86.25, 86.25, 92, 87.4, 88.55, 92, 72.45, 64.4];
+
           
-  var r2 = g2.selectAll("#b.value rect")
-          .data(function(d){
-            return(d);
-          })
-          .attr("y", function(d) {
-            return y((d.y0+ d.y)/5);
-          })
+    var heightr2Array = [106.95, 105.8, 96.60000000000001, 98.9, 97.74999999999997, 94.30000000000001, 94.30000000000001, 103.5, 97.75, 101.19999999999999];
+    var heightr1 = 0;
+    var heightr2 =0;
+    var statistica1 = d.current
+  
+
+    if(statistica1 == "Velocità"){//Con questo prendo l'height del rect corrente che è stato cliccato
+      var calc1 = (d.y0+d.y);
+      heightr1 += calc1;
         
-  var r3 = g3.selectAll("#c.value rect")
-          .data(function(d){
-            return(d);
-          })
+  }
+    
+   
+  
+
+   // var difference = heightr1 - heightr2;
+
+
+ 
+    
+    
+    
+    r1.transition()
+    .duration(1000)
+    .attr("transform", "translate(0," + (-d.y) + ")")
+    , r2.transition()
+    .duration(1000)
+    .attr("transform","translate(0, " + (heightr1) +")");
+
+
+
+
+  }
+
+  
+
+
+
+
+
+
+// function change(d){
+//   var g1 = svg.selectAll("#a.value")
+//           .data(dataset)
+
+//   var g2 = svg.selectAll("#b.value")
+//           .data(dataset)  
+//   var g3 = svg.selectAll("#c.value")
+//           .data(dataset)
+//   var g4 = svg.selectAll("#d.value")
+//           .data(dataset)
+//   var g5 = svg.selectAll("#e.value")
+//           .data(dataset)
+//   var r1 = g1.selectAll("#a.value rect")
+//           .data(function(d){
+//               return d;
+//           })
          
-  var r4 = g4.selectAll("#d.value rect")
-          .data(function(d){
-            return(d);
-          })
         
-  var r5 = g5.selectAll("#e.value rect")
-          .data(function(d){
-            return(d);
-          })
+       
+          
+//   var r2 = g2.selectAll("#b.value rect")
+//           .data(function(d){
+//             return(d);
+//           })
+
+        
+        
+//   var r3 = g3.selectAll("#c.value rect")
+//           .data(function(d){
+//             return(d);
+//           })
+         
+//   var r4 = g4.selectAll("#d.value rect")
+//           .data(function(d){
+//             return(d);
+//           })
+        
+//   var r5 = g5.selectAll("#e.value rect")
+//           .data(function(d){
+//             return(d);
+//           })
         
 
-  //Transizione tra i due rettangoli se non en commento una le fanno tutte insieme perchè vedono un click e partono DEVO isolare i click E SISTEMARE LA POS DEI RETTANGOLI(Eliminare Spazi bianchi)
-  r1 = g1.selectAll("rect").data(function(d){
-      return (d)
-    });
-  r1.transition()
-  .duration(1000)
-  .attr("transform", "translate(0," + -r2.y + ")")
-  , r2.transition()
-  .duration(1000)
-  .attr("transform","translate(0, " + r1.y +")")
+//   //Transizione tra i due rettangoli se non en commento una le fanno tutte insieme perchè vedono un click e partono DEVO isolare i click E SISTEMARE LA POS DEI RETTANGOLI(Eliminare Spazi bianchi)
+//   r1 = g1.selectAll("rect").data(function(d){
+//       return (d)
+//     });
+//   r1.transition()
+//   .duration(1000)
+//   .attr("transform", "translate(0," + (-d.y)+ ")")
+//   , r2.transition()
+//   .duration(1000)
+//   .attr("transform","translate(0, " + (d.y)+")");
 
-  // r2 = g2.selectAll("rect").data(function(d){
-  //   return(d)
-  // });
 
-  // r2.transition()
-  // .duration(1000)
-  // .attr("transform", "translate(0," + -d.y + ")")
-  // , r3.transition()
-  // .duration(1000)
-  // .attr("transform", "translate(0," + d.y + ")");
 
-  // r3 = g3.selectAll("rect").data(function(d){
+
+//   // r2 = g2.selectAll("rect").data(function(d){
+//   //   return(d)
+//   // });
+
+//   // r2.transition()
+//   // .duration(1000)
+//   // .attr("transform", "translate(0," + -d.y + ")")
+//   // , r3.transition()
+//   // .duration(1000)
+//   // .attr("transform", "translate(0," + d.y + ")");
+
+//   // r3 = g3.selectAll("rect").data(function(d){
   //   return(d)
   // });
 
@@ -347,7 +422,7 @@ function change(d){
     
     
 
-  }
+  //}
 
 
 
