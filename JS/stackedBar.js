@@ -185,248 +185,544 @@ legend.append("text")
     }
   });
   
-//Implementazione della funzione principale,  Facendo click con il pulsante sinistro del mouse su una sezione della barra, 
-//per tutte le barre questa sezione si scambia di posto con la sezione che si trova sopra di essa. Fai in modo che le transizioni siano progressive e non a salti.
 
-// function switchRect(d){
-
-//   var i = d.index; 
-//   var statistiche = [];
-//   var max = dataset.length -1;
-//   statistiche[0] = dataset[i];
-//   var ind1 = i;
-//   var ind2 = i+1;
-//   if (i == max){//Se cliccosull ultimo rect me lo scambia con il primo
-//     ind2 = 0;
-//   }
-
-//   dataset[ind1] = dataset[ind2];
-//   dataset[ind2] = statistiche[0];
-
-
-// }
-
-
-// // //ricalcolo del dataset
-// function update() {
-  
-//   rect = d3.select(".viz-portfolio-delinquent-status").selectAll("path").data(dataset);
-//   rect.transition()
-//   .duration(1000)
- 
-//   .attr("d", rect)
-//   .attr("fill", function(d){
-//     return colori[i];
-//   })
-//   //.attr("transform", "translate(0," +  + ")")
-  
-//   // .attr("height", d.y)
-//   //  .attr("width", x.rangeBand())
-  
+var idrect1 = ["r1a", "r1b", "r1c", "r1d", "r1e", "r1f", "r1g", "r1h", "r1i", "r1l"];
+var idrect2 = ["r2a", "r2b", "r2c", "r2d", "r2e", "r2f", "r2g", "r2h", "r2i", "r2l"];
+var idrect3 = ["r3a", "r3b", "r3c", "r3d", "r3e", "r3f", "r3g", "r3h", "r3i", "r3l"];
+var idrect4 = ["r4a", "r4b", "r4c", "r4d", "r4e", "r4f", "r4g", "r4h", "r4i", "r4l"];
 
 
 
-//   // var transition = svg.transition().duration(1000);
+var g1 = svg.selectAll("#a.value")
+      .data(dataset);
+var g2 = svg.selectAll("#b.value")
+      .data(dataset);
+var g3 = svg.selectAll("#c.value")
+      .data(dataset);
+var g4 = svg.selectAll("#d.value")
+      .data(dataset);
 
-//   // //riordino barre
-  
-//   // transition.selectAll("g.value rect")
-//   // .attr("x", function(d) {
-//   //         return x(d.name);
-//   //     })
-//   // .attr("y", function(d) {
-//   //         return y((d.y0+ d.y)/5);
-//   //     })
-//   // .attr("height", function(d) {
-//   //         return (y(d.y0) - y(d.y0+ d.y))/5;
-//   //     })
+var r1 = g1.selectAll("#a.value rect")
+.data(function(d){
+    return d;
+})
+.attr("id", function(d,i){
+  return idrect1[i]
+})
+.on("click", function(d){
+  changer1r2(d);
 
+})
 
-//   // var groups = svg.selectAll(".value")
-//   // .data(dataset);
-
-//   // groups.selectAll("rect")
-//   // .data(function(d) {
-//   // return d;
-//   // })
-
-//   // //creazione della transizione da eseguire
-  
-    
-//   // transition.select(".x.axis")
-//   // .call(yxAxis)
-//   // .selectAll("g")
-
-
-  var g1 = svg.selectAll("#a.value")
-        .data(dataset);
-  var g2 = svg.selectAll("#b.value")
-        .data(dataset) 
-
-  var r1 = g1.selectAll("#a.value rect")
-  .data(function(d){
-      return d;
-  })
+var r2 = g2.selectAll("#b.value rect")
+.data(function(d){
+  return(d);
+})
+.attr("id", function(d,i){
+  return idrect2[i];
+})
+.on("click", function(d){
+  changer2r3(d);
+})
 
 
-  .on("click", function(d){
-    changer1r2(d);
+var r3 = g3.selectAll("#c.value rect")
+.data(function(d){
+  return(d);
+})
+.attr("id", function(d,i){
+  return idrect3[i];
+})
+.on("click", function(d){
+   changer3r4(d);
+})
 
-  })
+var r4 = g4.selectAll("#d.value rect")
+.data(function(d){
+  return(d);
+})
+.attr("id", function(d,i){
+  return idrect4[i];
+})
+// .on("click", function(d){
+//    changer4r5(d);
+// })
 
-  
-
- 
-  
-  //Separato il click tra i vari rect appartenenti allo stesso gruppo, ora qui funziona se si clicca sul rect giusto
-  function changer1r2(d,i){
-    var r2 = g2.selectAll("#b.value rect")
-    .data(function(d){
-      return(d);
-    })
-  
-    var heightr1Array = [103.5, 100.05, 86.25, 86.25, 92, 87.4, 88.55, 92, 72.45, 64.4];
-
-          
-    var heightr2Array = [106.95, 105.8, 96.60000000000001, 98.9, 97.74999999999997, 94.30000000000001, 94.30000000000001, 103.5, 97.75, 101.19999999999999];
-    var heightr1 = 0;
-    var heightr2 =0;
-    var statistica1 = d.current
-  
-
-    if(statistica1 == "Velocità"){//Con questo prendo l'height del rect corrente che è stato cliccato
-      var calc1 = (d.y0+d.y);
-      heightr1 += calc1;
-        
-  }
-    
-   
-  
-
-   // var difference = heightr1 - heightr2;
+//Prima funzione: se si clicca sul rettangolo del primo gruppo si scambia con quello appartenente al secondo gruppo
+function changer1r2(d){
 
 
- 
-    
-    
-    
-    r1.transition()
-    .duration(1000)
-    .attr("transform", "translate(0," + (-d.y) + ")")
-    , r2.transition()
-    .duration(1000)
-    .attr("transform","translate(0, " + (heightr1) +")");
+  var heightr1a = parseInt(g1.select("#a.value #r1a").attr("height"));
+  var heightr2a = parseInt(g2.select("#b.value #r2a").attr("height"));
 
+  var heightr1b = parseInt(g1.select("#a.value #r1b").attr("height"));
+  var heightr2b = parseInt(g2.select("#b.value #r2b").attr("height"));
 
+  var heightr1c = parseInt(g1.select("#a.value #r1c").attr("height"));
+  var heightr2c = parseInt(g2.select("#b.value #r2c").attr("height"));
 
+  var heightr1d = parseInt(g1.select("#a.value #r1d").attr("height"));
+  var heightr2d = parseInt(g2.select("#b.value #r2d").attr("height"));
 
-  }
+  var heightr1e = parseInt(g1.select("#a.value #r1e").attr("height"));
+  var heightr2e = parseInt(g2.select("#b.value #r2e").attr("height"));
+
+  var heightr1f = parseInt(g1.select("#a.value #r1f").attr("height"));
+  var heightr2f = parseInt(g2.select("#b.value #r2f").attr("height"));
+
+  var heightr1g = parseInt(g1.select("#a.value #r1g").attr("height"));
+  var heightr2g = parseInt(g2.select("#b.value #r2g").attr("height"));
+
+  var heightr1h = parseInt(g1.select("#a.value #r1h").attr("height"));
+  var heightr2h = parseInt(g2.select("#b.value #r2h").attr("height"));
+
+  var heightr1i = parseInt(g1.select("#a.value #r1i").attr("height"));
+  var heightr2i = parseInt(g2.select("#b.value #r2i").attr("height"));
+
+  var heightr1l = parseInt(g1.select("#a.value #r1l").attr("height"));
+  var heightr2l = parseInt(g2.select("#b.value #r2l").attr("height"));
 
   
+  var r1a = g1.select("#a.value #r1a");
+  var r2a = g2.select("#b.value #r2a");
+
+  var r1b = g1.select("#a.value #r1b");
+  var r2b = g2.select("#b.value #r2b");
+
+  var r1c = g1.select("#a.value #r1c");
+  var r2c = g2.select("#b.value #r2c");
+
+  var r1d = g1.select("#a.value #r1d");
+  var r2d = g2.select("#b.value #r2d");
+
+  var r1e = g1.select("#a.value #r1e");
+  var r2e = g2.select("#b.value #r2e");
+
+  var r1f = g1.select("#a.value #r1f");
+  var r2f = g2.select("#b.value #r2f");
+
+  var r1g = g1.select("#a.value #r1g");
+  var r2g = g2.select("#b.value #r2g");
+
+  var r1h = g1.select("#a.value #r1h");
+  var r2h = g2.select("#b.value #r2h");
+
+  var r1i = g1.select("#a.value #r1i");
+  var r2i = g2.select("#b.value #r2i");
+
+  var r1l = g1.select("#a.value #r1l");
+  var r2l = g2.select("#b.value #r2l");
+
+
+  r1a.transition()
+  .duration(1000)
+  .attr("transform", "translate(0," + (-heightr2a) + ")")
+  
+  , r2a.transition()
+  .duration(1000)
+  .attr("transform","translate(0, " + (heightr1a) +")");
+
+
+  r1b.transition()
+  .duration(1000)
+  .attr("transform", "translate(0," + (-heightr2b) + ")")
+
+  ,r2b.transition()
+  .duration(1000)
+  .attr("transform","translate(0, " + (heightr1b) + ")");
+
+
+  r1c.transition()
+  .duration(1000)
+  .attr("transform", "translate(0," + (-heightr2c) + ")")
+
+  ,r2c.transition()
+  .duration(1000)
+  .attr("transform","translate(0, " + (heightr1c) + ")");
+
+
+  r1d.transition()
+  .duration(1000)
+  .attr("transform", "translate(0," + (-heightr2d) + ")")
+
+  ,r2d.transition()
+  .duration(1000)
+  .attr("transform","translate(0, " + (heightr1d) + ")");
+
+
+  r1e.transition()
+  .duration(1000)
+  .attr("transform", "translate(0," + (-heightr2e) + ")")
+
+  ,r2e.transition()
+  .duration(1000)
+  .attr("transform","translate(0, " + (heightr1e) + ")");
+
+
+  r1f.transition()
+  .duration(1000)
+  .attr("transform", "translate(0," + (-heightr2f) + ")")
+
+  ,r2f.transition()
+  .duration(1000)
+  .attr("transform","translate(0, " + (heightr1f) + ")");
+
+
+  r1g.transition()
+  .duration(1000)
+  .attr("transform", "translate(0," + (-heightr2g) + ")")
+
+  ,r2g.transition()
+  .duration(1000)
+  .attr("transform","translate(0, " + (heightr1g) + ")");
+
+
+  r1h.transition()
+  .duration(1000)
+  .attr("transform", "translate(0," + (-heightr2h) + ")")
+
+  ,r2h.transition()
+  .duration(1000)
+  .attr("transform","translate(0, " + (heightr1h) + ")");
+
+
+  r1i.transition()
+  .duration(1000)
+  .attr("transform", "translate(0," + (-heightr2i) + ")")
+
+  ,r2i.transition()
+  .duration(1000)
+  .attr("transform","translate(0, " + (heightr1i) + ")");
+
+
+  r1l.transition()
+  .duration(1000)
+  .attr("transform", "translate(0," + (-heightr2l) + ")")
+
+  ,r2l.transition()
+  .duration(1000)
+  .attr("transform","translate(0, " + (heightr1l) + ")");
 
 
 
 
+}
+
+//Prima funzione: se si clicca sul rettangolo del secondo gruppo si scambia con quello appartenente al terzo gruppo
+function changer2r3(d){
+
+  var heightr2a = parseInt(g2.select("#b.value #r2a").attr("height"));
+  var heightr3a = parseInt(g3.select("#c.value #r3a").attr("height"));
+
+  var heightr2b = parseInt(g2.select("#b.value #r2b").attr("height"));
+  var heightr3b = parseInt(g3.select("#c.value #r3b").attr("height"));
+
+  var heightr2c = parseInt(g2.select("#b.value #r2c").attr("height"));
+  var heightr3c = parseInt(g3.select("#c.value #r3c").attr("height"));
+
+  var heightr2d = parseInt(g2.select("#b.value #r2d").attr("height"));
+  var heightr3d = parseInt(g3.select("#c.value #r3d").attr("height"));
+
+  var heightr2e = parseInt(g2.select("#b.value #r2e").attr("height"));
+  var heightr3e = parseInt(g3.select("#c.value #r3e").attr("height"));
+
+  var heightr2f = parseInt(g2.select("#b.value #r2f").attr("height"));
+  var heightr3f = parseInt(g3.select("#c.value #r3f").attr("height"));
+
+  var heightr2g = parseInt(g2.select("#b.value #r2g").attr("height"));
+  var heightr3g = parseInt(g3.select("#c.value #r3g").attr("height"));
+
+  var heightr2h = parseInt(g2.select("#b.value #r2h").attr("height"));
+  var heightr3h = parseInt(g3.select("#c.value #r3h").attr("height"));
+
+  var heightr2i = parseInt(g2.select("#b.value #r2i").attr("height"));
+  var heightr3i = parseInt(g3.select("#c.value #r3i").attr("height"));
+
+  var heightr2l = parseInt(g2.select("#b.value #r2l").attr("height"));
+  var heightr3l = parseInt(g3.select("#c.value #r3l").attr("height"));
 
 
-// function change(d){
-//   var g1 = svg.selectAll("#a.value")
-//           .data(dataset)
+  var r2a = g2.select("#b.value #r2a");
+  var r3a = g3.select("#c.value #r3a");
 
-//   var g2 = svg.selectAll("#b.value")
-//           .data(dataset)  
-//   var g3 = svg.selectAll("#c.value")
-//           .data(dataset)
-//   var g4 = svg.selectAll("#d.value")
-//           .data(dataset)
-//   var g5 = svg.selectAll("#e.value")
-//           .data(dataset)
-//   var r1 = g1.selectAll("#a.value rect")
-//           .data(function(d){
-//               return d;
-//           })
-         
-        
-       
-          
-//   var r2 = g2.selectAll("#b.value rect")
-//           .data(function(d){
-//             return(d);
-//           })
+  var r2b = g2.select("#b.value #r2b");
+  var r3b = g3.select("#c.value #r3b");
 
-        
-        
-//   var r3 = g3.selectAll("#c.value rect")
-//           .data(function(d){
-//             return(d);
-//           })
-         
-//   var r4 = g4.selectAll("#d.value rect")
-//           .data(function(d){
-//             return(d);
-//           })
-        
-//   var r5 = g5.selectAll("#e.value rect")
-//           .data(function(d){
-//             return(d);
-//           })
-        
+  var r2c = g2.select("#b.value #r2c");
+  var r3c = g3.select("#c.value #r3c");
 
-//   //Transizione tra i due rettangoli se non en commento una le fanno tutte insieme perchè vedono un click e partono DEVO isolare i click E SISTEMARE LA POS DEI RETTANGOLI(Eliminare Spazi bianchi)
-//   r1 = g1.selectAll("rect").data(function(d){
-//       return (d)
-//     });
-//   r1.transition()
-//   .duration(1000)
-//   .attr("transform", "translate(0," + (-d.y)+ ")")
-//   , r2.transition()
-//   .duration(1000)
-//   .attr("transform","translate(0, " + (d.y)+")");
+  var r2d = g2.select("#b.value #r2d");
+  var r3d = g3.select("#c.value #r3d");
+
+  var r2e = g2.select("#b.value #r2e");
+  var r3e = g3.select("#c.value #r3e");
+
+  var r2f = g2.select("#b.value #r2f");
+  var r3f = g3.select("#c.value #r3f");
+
+  var r2g = g2.select("#b.value #r2g");
+  var r3g = g3.select("#c.value #r3g");
+
+  var r2h = g2.select("#b.value #r2h");
+  var r3h = g3.select("#c.value #r3h");
+
+  var r2i = g2.select("#b.value #r2i");
+  var r3i = g3.select("#c.value #r3i");
+
+  var r2l = g2.select("#b.value #r2l");
+  var r3l = g3.select("#c.value #r3l");
 
 
+  r2a.transition()
+  .duration(1000)
+  .attr("transform", "translate(0," + (-heightr3a) + ")")
+  
+  , r3a.transition()
+  .duration(1000)
+  .attr("transform","translate(0, " + (heightr2a) +")");
 
 
-//   // r2 = g2.selectAll("rect").data(function(d){
-//   //   return(d)
-//   // });
+  r2b.transition()
+  .duration(1000)
+  .attr("transform", "translate(0," + (-heightr3b) + ")")
 
-//   // r2.transition()
-//   // .duration(1000)
-//   // .attr("transform", "translate(0," + -d.y + ")")
-//   // , r3.transition()
-//   // .duration(1000)
-//   // .attr("transform", "translate(0," + d.y + ")");
-
-//   // r3 = g3.selectAll("rect").data(function(d){
-  //   return(d)
-  // });
-
-  // r3.transition()
-  // .duration(1000)
-  // .attr("transform", "translate(0," + -d.y + ")")
-  // , r4.transition()
-  // .duration(1000)
-  // .attr("transform", "translate(0," + d.y + ")");
-
-  // r4= g4.selectAll("rect").data(function(d){
-  //   return(d)
-  // });
-
-  // r4.transition()
-  // .duration(1000)
-  // .attr("transform", "translate(0," + -d.y + ")")
-  // , r5.transition()
-  // .duration(1000)
-  // .attr("transform", "translate(0," + d.y + ")");
-
-    
-    
-
-  //}
+  ,r3b.transition()
+  .duration(1000)
+  .attr("transform","translate(0, " + (heightr2b) + ")");
 
 
+  r2c.transition()
+  .duration(1000)
+  .attr("transform", "translate(0," + (-heightr3c) + ")")
 
- 
+  ,r3c.transition()
+  .duration(1000)
+  .attr("transform","translate(0, " + (heightr2c) + ")");
+
+
+  r2d.transition()
+  .duration(1000)
+  .attr("transform", "translate(0," + (-heightr3d) + ")")
+
+  ,r3d.transition()
+  .duration(1000)
+  .attr("transform","translate(0, " + (heightr2d) + ")");
+
+
+  r2e.transition()
+  .duration(1000)
+  .attr("transform", "translate(0," + (-heightr3e) + ")")
+
+  ,r3e.transition()
+  .duration(1000)
+  .attr("transform","translate(0, " + (heightr2e) + ")");
+
+
+  r2f.transition()
+  .duration(1000)
+  .attr("transform", "translate(0," + (-heightr3f) + ")")
+
+  ,r3f.transition()
+  .duration(1000)
+  .attr("transform","translate(0, " + (heightr2f) + ")");
+
+
+  r2g.transition()
+  .duration(1000)
+  .attr("transform", "translate(0," + (-heightr3g) + ")")
+
+  ,r3g.transition()
+  .duration(1000)
+  .attr("transform","translate(0, " + (heightr2g) + ")");
+
+
+  r2h.transition()
+  .duration(1000)
+  .attr("transform", "translate(0," + (-heightr3h) + ")")
+
+  ,r3h.transition()
+  .duration(1000)
+  .attr("transform","translate(0, " + (heightr2h) + ")");
+
+
+  r2i.transition()
+  .duration(1000)
+  .attr("transform", "translate(0," + (-heightr3i) + ")")
+
+  ,r3i.transition()
+  .duration(1000)
+  .attr("transform","translate(0, " + (heightr2i) + ")");
+
+
+  r2l.transition()
+  .duration(1000)
+  .attr("transform", "translate(0," + (-heightr3l) + ")")
+
+  ,r3l.transition()
+  .duration(1000)
+  .attr("transform","translate(0, " + (heightr2l) + ")");
+
+
+}
+
+//Prima funzione: se si clicca sul rettangolo del terzo gruppo si scambia con quello appartenente al quarto gruppo
+
+function changer3r4(d){
+
+  var heightr3a = parseInt(g3.select("#c.value #r3a").attr("height"));
+  var heightr4a = parseInt(g4.select("#d.value #r4a").attr("height"));
+
+  var heightr3b = parseInt(g3.select("#c.value #r3b").attr("height"));
+  var heightr4b = parseInt(g4.select("#d.value #r4b").attr("height"));
+
+  var heightr3c = parseInt(g3.select("#c.value #r3c").attr("height"));
+  var heightr4c = parseInt(g4.select("#d.value #r4c").attr("height"));
+
+  var heightr3d = parseInt(g3.select("#c.value #r3d").attr("height"));
+  var heightr4d = parseInt(g4.select("#d.value #r4d").attr("height"));
+
+  var heightr3e = parseInt(g3.select("#c.value #r3e").attr("height"));
+  var heightr4e = parseInt(g4.select("#d.value #r4e").attr("height"));
+
+  var heightr3f = parseInt(g3.select("#c.value #r3f").attr("height"));
+  var heightr4f = parseInt(g4.select("#d.value #r4f").attr("height"));
+
+  var heightr3g = parseInt(g3.select("#c.value #r3g").attr("height"));
+  var heightr4g = parseInt(g4.select("#d.value #r4g").attr("height"));
+
+  var heightr3h = parseInt(g3.select("#c.value #r3h").attr("height"));
+  var heightr4h = parseInt(g4.select("#d.value #r4h").attr("height"));
+
+  var heightr3i = parseInt(g3.select("#c.value #r3i").attr("height"));
+  var heightr4i = parseInt(g4.select("#d.value #r4i").attr("height"));
+
+  var heightr3l = parseInt(g3.select("#c.value #r3l").attr("height"));
+  var heightr4l = parseInt(g4.select("#d.value #r4l").attr("height"));
+
+
+  var r3a = g3.select("#c.value #r3a");
+  var r4a = g4.select("#d.value #r4a");
+
+  var r3b = g3.select("#c.value #r3b");
+  var r4b = g4.select("#d.value #r4b");
+
+  var r3c = g3.select("#c.value #r3c");
+  var r4c = g4.select("#d.value #r4c");
+
+  var r3d = g3.select("#c.value #r3d");
+  var r4d = g4.select("#d.value #r4d");
+
+  var r3e = g3.select("#c.value #r3e");
+  var r4e = g4.select("#d.value #r4e");
+
+  var r3f = g3.select("#c.value #r3f");
+  var r4f = g4.select("#d.value #r4f");
+
+  var r3g = g3.select("#c.value #r3g");
+  var r4g = g4.select("#d.value #r4g");
+
+  var r3h = g3.select("#c.value #r3h");
+  var r4h = g4.select("#d.value #r4h");
+
+  var r3i = g3.select("#c.value #r3i");
+  var r4i = g4.select("#d.value #r4i");
+
+  var r3l = g3.select("#c.value #r3l");
+  var r4l = g4.select("#d.value #r4l");
+
+
+  r3a.transition()
+  .duration(1000)
+  .attr("transform", "translate(0," + (-heightr4a) + ")")
+  
+  , r4a.transition()
+  .duration(1000)
+  .attr("transform","translate(0, " + (heightr3a) +")");
+
+
+  r3b.transition()
+  .duration(1000)
+  .attr("transform", "translate(0," + (-heightr4b) + ")")
+
+  ,r4b.transition()
+  .duration(1000)
+  .attr("transform","translate(0, " + (heightr3b) + ")");
+
+
+  r3c.transition()
+  .duration(1000)
+  .attr("transform", "translate(0," + (-heightr4c) + ")")
+
+  ,r4c.transition()
+  .duration(1000)
+  .attr("transform","translate(0, " + (heightr3c) + ")");
+
+
+  r3d.transition()
+  .duration(1000)
+  .attr("transform", "translate(0," + (-heightr4d) + ")")
+
+  ,r4d.transition()
+  .duration(1000)
+  .attr("transform","translate(0, " + (heightr3d) + ")");
+
+
+  r3e.transition()
+  .duration(1000)
+  .attr("transform", "translate(0," + (-heightr4e) + ")")
+
+  ,r4e.transition()
+  .duration(1000)
+  .attr("transform","translate(0, " + (heightr3e) + ")");
+
+
+  r3f.transition()
+  .duration(1000)
+  .attr("transform", "translate(0," + (-heightr4f) + ")")
+
+  ,r4f.transition()
+  .duration(1000)
+  .attr("transform","translate(0, " + (heightr3f) + ")");
+
+
+  r3g.transition()
+  .duration(1000)
+  .attr("transform", "translate(0," + (-heightr4g) + ")")
+
+  ,r4g.transition()
+  .duration(1000)
+  .attr("transform","translate(0, " + (heightr3g) + ")");
+
+
+  r3h.transition()
+  .duration(1000)
+  .attr("transform", "translate(0," + (-heightr4h) + ")")
+
+  ,r4h.transition()
+  .duration(1000)
+  .attr("transform","translate(0, " + (heightr3h) + ")");
+
+
+  r3i.transition()
+  .duration(1000)
+  .attr("transform", "translate(0," + (-heightr4i) + ")")
+
+  ,r4i.transition()
+  .duration(1000)
+  .attr("transform","translate(0, " + (heightr3i) + ")");
+
+
+  r3l.transition()
+  .duration(1000)
+  .attr("transform", "translate(0," + (-heightr4l) + ")")
+
+  ,r4l.transition()
+  .duration(1000)
+  .attr("transform","translate(0, " + (heightr3l) + ")");
+
+
+}
+
     
 
 });
